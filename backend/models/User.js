@@ -40,3 +40,33 @@ const GOAL_ADJUSTMENT = {
   maintain: 0,
 };
 
+userSchema.methods.comparePassword = function (candidate) {
+  return bcrypt.compare(candidate, this.password);
+};
+
+// Mifflin-St Jeor equation
+userSchema.methods.calculateBMR = function () {
+  if (!this.age || !this.height || !this.weight) return null;
+  const base = 10 * this.weight + 6.25 * this.height - 5 * this.age;
+  return this.sex === "female" ? base - 161 : base + 5;
+};
+
+userSchema.methods.calculateTDEE = function () {
+  const bmr = this.calculateBMR();
+  if (bmr === null) return null;
+  return bmr * (ACTIVITY_MULTIPLIERS[this.activityLevel] || 1.55);
+};
+
+userSchema.methods.calculateTargetCalories = function () {
+  const tdee = this.calculateTDEE();
+  if (tdee === null) return null;
+  return Math.round(tdee + (GOAL_ADJUSTMENT[this.goal] || 0));
+};
+
+userSchema.pre("save", async function (next) {
+  if (!this.isModified("password")) return next();
+  this.password = await bcrypt.hash(this.password, 10);
+  next();
+});
+
+export default mongoose.model("User", userSchema);
