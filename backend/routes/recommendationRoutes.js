@@ -71,6 +71,10 @@ router.get("/", async (req, res) => {
     });
   }
 
+  // --- Cardio/steps check (last 7 days) ---
+  const recentCardio = await CardioSession.find({ user: req.userId, date: { $gte: weekAgo } });
+  const totalSteps = recentCardio.reduce((sum, c) => sum + (c.steps || 0), 0);
+
 
 
 
