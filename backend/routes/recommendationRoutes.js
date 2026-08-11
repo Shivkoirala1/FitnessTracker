@@ -74,7 +74,17 @@ router.get("/", async (req, res) => {
   // --- Cardio/steps check (last 7 days) ---
   const recentCardio = await CardioSession.find({ user: req.userId, date: { $gte: weekAgo } });
   const totalSteps = recentCardio.reduce((sum, c) => sum + (c.steps || 0), 0);
-
+  if (recentCardio.length < 3) {
+    recommendations.push({
+      type: "cardio",
+      message: "Fewer than 3 cardio/walk sessions logged this week. Aim for at least 3 for cardiovascular health.",
+    });
+  } else if (totalSteps && totalSteps / recentCardio.length < 5000) {
+    recommendations.push({
+      type: "cardio",
+      message: "Your average daily steps are on the low side — try to work toward 8,000-10,000/day.",
+    });
+  }
 
 
 
