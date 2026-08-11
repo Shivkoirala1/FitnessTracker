@@ -63,7 +63,15 @@ router.get("/", async (req, res) => {
     if (from) filter.date.$gte = new Date(from);
     if (to) filter.date.$lte = new Date(to);
   }
-  
+  const entries = await FoodEntry.find(filter).sort({ date: -1 });
+  res.json(entries);
+});
+
+router.delete("/:id", async (req, res) => {
+  await FoodEntry.deleteOne({ _id: req.params.id, user: req.userId });
+  res.json({ message: "Deleted" });
+});
+
 
   
 
