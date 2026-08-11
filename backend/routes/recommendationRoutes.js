@@ -51,6 +51,14 @@ router.get("/", async (req, res) => {
     });
   }
 
+  // --- Training balance check (last 7 days) ---
+  const weekAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000);
+  const recentWorkouts = await WorkoutSession.find({ user: req.userId, date: { $gte: weekAgo } });
+  const trainedGroups = new Set(recentWorkouts.map((w) => w.dayType));
+  const allGroups = ["chest", "triceps", "back", "biceps", "shoulder", "leg", "abs"];
+  const untrainedGroups = allGroups.filter((g) => !trainedGroups.has(g));
+
+
 
 
 
