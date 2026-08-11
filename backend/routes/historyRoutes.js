@@ -50,7 +50,19 @@ router.get("/", async (req, res) => {
     row.caloriesEaten += e.calories;
     row.proteinEaten += e.protein;
   }
-  
+  for (const w of workouts) {
+    const row = byDate[dateKey(w.date)];
+    if (!row) continue;
+    row.workoutSessions += 1;
+    row.workoutCaloriesBurned += w.caloriesBurned || 0;
+  }
+  for (const c of cardioSessions) {
+    const row = byDate[dateKey(c.date)];
+    if (!row) continue;
+    row.cardioSessions += 1;
+    row.cardioCaloriesBurned += c.caloriesBurned || 0;
+    row.cardioDistanceKm += c.distanceKm || 0;
+  }
 
   const result = Object.values(byDate).sort((a, b) => b.date.localeCompare(a.date));
   res.json({ days: result });
