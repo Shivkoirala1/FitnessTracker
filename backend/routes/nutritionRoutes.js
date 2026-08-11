@@ -55,11 +55,21 @@ router.get("/lookup", async (req, res) => {
   }
 });
 
-
+router.get("/", async (req, res) => {
+  const { from, to } = req.query;
+  const filter = { user: req.userId };
+  if (from || to) {
+    filter.date = {};
+    if (from) filter.date.$gte = new Date(from);
+    if (to) filter.date.$lte = new Date(to);
+  }
+  
 
   
 
+  const user = await User.findById(req.userId);
+  const target = user.calculateTargetCalories();
 
-
-
+  
+});
 
