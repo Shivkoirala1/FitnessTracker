@@ -86,7 +86,12 @@ router.get("/:date", async (req, res) => {
     CardioSession.find({ user: req.userId, date: { $gte: dayStart, $lte: dayEnd } }).sort({ date: 1 }),
   ]);
 
-  
+  res.json({
+    date: dayStart.toISOString().slice(0, 10),
+    foodEntries,
+    workouts,
+    cardioSessions,
+  });
 });
 
 export default router;
