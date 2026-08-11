@@ -47,4 +47,17 @@ router.post("/login", async (req, res) => {
   }
 });
 
+router.get("/me", requireAuth, async (req, res) => {
+  const user = await User.findById(req.userId).select("-password");
+  if (!user) return res.status(404).json({ message: "User not found" });
+  res.json({
+    user,
+    bmr: user.calculateBMR(),
+    tdee: user.calculateTDEE(),
+    targetCalories: user.calculateTargetCalories(),
+  });
+});
+
+
+
 export default router;
