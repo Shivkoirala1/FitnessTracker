@@ -17,7 +17,19 @@ router.post("/", async (req, res) => {
       return res.status(400).json({ message: "foodName and amountGrams are required" });
     }
 
-    
+    const { fdcId, matchedName, per100g } = await lookupFoodPer100g(foodName);
+    const nutrition = scaleNutrition(per100g, Number(amountGrams));
+
+    const entry = await FoodEntry.create({
+      user: req.userId,
+      foodName,
+      matchedName,
+      amountGrams: Number(amountGrams),
+      fdcId,
+      mealType,
+      date,
+      ...nutrition,
+    });
 
 });
 
