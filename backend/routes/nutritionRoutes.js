@@ -72,6 +72,17 @@ router.delete("/:id", async (req, res) => {
   res.json({ message: "Deleted" });
 });
 
+// Daily summary: total intake vs the user's calculated target.
+router.get("/summary/:date", async (req, res) => {
+  const dayStart = new Date(req.params.date);
+  dayStart.setHours(0, 0, 0, 0);
+  const dayEnd = new Date(dayStart);
+  dayEnd.setHours(23, 59, 59, 999);
+
+  const entries = await FoodEntry.find({
+    user: req.userId,
+    date: { $gte: dayStart, $lte: dayEnd },
+  });
 
   
 
