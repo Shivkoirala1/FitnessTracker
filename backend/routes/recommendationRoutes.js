@@ -86,5 +86,11 @@ router.get("/", async (req, res) => {
     });
   }
 
+  if (recommendations.length === 0) {
+    recommendations.push({ type: "general", message: "You're on track across nutrition, training, and cardio. Keep it up!" });
+  }
+
+  res.json({ target, caloriesEaten, proteinEaten, proteinTarget, recommendations });
+});
 
 
