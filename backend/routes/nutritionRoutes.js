@@ -39,7 +39,21 @@ router.post("/", async (req, res) => {
   }
 });
 
-
+// Preview nutrition for a food + amount without saving it (used by the frontend
+// to show the user what will be logged before they confirm).
+router.get("/lookup", async (req, res) => {
+  try {
+    const { foodName, amountGrams } = req.query;
+    if (!foodName || !amountGrams) {
+      return res.status(400).json({ message: "foodName and amountGrams query params are required" });
+    }
+    const { matchedName, per100g } = await lookupFoodPer100g(foodName);
+    const nutrition = scaleNutrition(per100g, Number(amountGrams));
+    res.json({ matchedName, ...nutrition });
+  } catch (err) {
+    res.status(422).json({ message: err.message });
+  }
+});
 
 
 
