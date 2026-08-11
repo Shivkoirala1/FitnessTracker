@@ -30,4 +30,8 @@ router.post("/", async (req, res) => {
   }
 });
 
+router.get("/", async (req, res) => {
+  const sessions = await CardioSession.find({ user: req.userId }).sort({ date: -1 });
+  res.json(sessions);
+});
 
