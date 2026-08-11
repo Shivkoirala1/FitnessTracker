@@ -1,109 +1,97 @@
 import express from "express";
 import FoodEntry from "../models/FoodEntry.js";
-import User from "../models/User.js";
+import WorkoutSession from "../models/WorkoutSession.js";
+import CardioSession from "../models/CardioSession.js";
 import { requireAuth } from "../middleware/auth.js";
-import { lookupFoodPer100g, scaleNutrition } from "../utils/nutritionLookup.js";
 
 const router = express.Router();
 router.use(requireAuth);
 
-// Log a food intake entry — user only sends foodName + amountGrams (+ optional mealType/date).
-// Calories/protein/carbs/fat are looked up automatically from USDA FoodData Central
-// and scaled to the amount eaten.
-router.post("/", async (req, res) => {
-  try {
-    const { foodName, amountGrams, mealType, date } = req.body;
-    if (!foodName || !amountGrams) {
-      return res.status(400).json({ message: "foodName and amountGrams are required" });
-    }
+function dateKey(d) {
+  return new Date(d).toISOString().slice(0, 10);
+}
 
-    const { fdcId, matchedName, per100g } = await lookupFoodPer100g(foodName);
-    const nutrition = scaleNutrition(per100g, Number(amountGrams));
-
-    const entry = await FoodEntry.create({
-      user: req.userId,
-      foodName,
-      matchedName,
-      amountGrams: Number(amountGrams),
-      fdcId,
-      mealType,
-      date,
-      ...nutrition,
-    });
-
-    res.status(201).json(entry);
-  } catch (err) {
-    // Lookup failures (food not found, rate limit) are the user's problem to fix by
-    // rephrasing the food name — surface as 422 rather than a generic 500.
-    res.status(422).json({ message: err.message });
-  }
-});
-
-// Preview nutrition for a food + amount without saving it (used by the frontend
-// to show the user what will be logged before they confirm).
-router.get("/lookup", async (req, res) => {
-  try {
-    const { foodName, amountGrams } = req.query;
-    if (!foodName || !amountGrams) {
-      return res.status(400).json({ message: "foodName and amountGrams query params are required" });
-    }
-    const { matchedName, per100g } = await lookupFoodPer100g(foodName);
-    const nutrition = scaleNutrition(per100g, Number(amountGrams));
-    res.json({ matchedName, ...nutrition });
-  } catch (err) {
-    res.status(422).json({ message: err.message });
-  }
-});
-
+// GET /api/history?days=14 — one summary row per day, newest first.
+// Every day in the range is included even if nothing was logged (zeros),
+// so the frontend can render a consistent 14-day list.
 router.get("/", async (req, res) => {
-  const { from, to } = req.query;
-  const filter = { user: req.userId };
-  if (from || to) {
-    filter.date = {};
-    if (from) filter.date.$gte = new Date(from);
-    if (to) filter.date.$lte = new Date(to);
+  const days = Math.min(Math.max(Number(req.query.days) || 14, 1), 60);
+
+  const since = new Date();
+  since.setHours(0, 0, 0, 0);
+  since.setDate(since.getDate() - (days - 1));
+
+  const [foodEntries, workouts, cardioSessions] = await Promise.all([
+    FoodEntry.find({ user: req.userId, date: { $gte: since } }),
+    WorkoutSession.find({ user: req.userId, date: { $gte: since } }),
+    CardioSession.find({ user: req.userId, date: { $gte: since } }),
+  ]);
+
+  const byDate = {};
+  for (let i = 0; i < days; i++) {
+    const d = new Date(since);
+    d.setDate(d.getDate() + i);
+    const key = dateKey(d);
+    byDate[key] = {
+      date: key,
+      caloriesEaten: 0,
+      proteinEaten: 0,
+      workoutSessions: 0,
+      workoutCaloriesBurned: 0,
+      cardioSessions: 0,
+      cardioCaloriesBurned: 0,
+      cardioDistanceKm: 0,
+    };
   }
-  const entries = await FoodEntry.find(filter).sort({ date: -1 });
-  res.json(entries);
+
+  for (const e of foodEntries) {
+    const row = byDate[dateKey(e.date)];
+    if (!row) continue;
+    row.caloriesEaten += e.calories;
+    row.proteinEaten += e.protein;
+  }
+  for (const w of workouts) {
+    const row = byDate[dateKey(w.date)];
+    if (!row) continue;
+    row.workoutSessions += 1;
+    row.workoutCaloriesBurned += w.caloriesBurned || 0;
+  }
+  for (const c of cardioSessions) {
+    const row = byDate[dateKey(c.date)];
+    if (!row) continue;
+    row.cardioSessions += 1;
+    row.cardioCaloriesBurned += c.caloriesBurned || 0;
+    row.cardioDistanceKm += c.distanceKm || 0;
+  }
+
+  const result = Object.values(byDate).sort((a, b) => b.date.localeCompare(a.date));
+  res.json({ days: result });
 });
 
-router.delete("/:id", async (req, res) => {
-  await FoodEntry.deleteOne({ _id: req.params.id, user: req.userId });
-  res.json({ message: "Deleted" });
-});
-
-// Daily summary: total intake vs the user's calculated target.
-router.get("/summary/:date", async (req, res) => {
+// GET /api/history/2026-08-01 — everything logged on a single day.
+router.get("/:date", async (req, res) => {
   const dayStart = new Date(req.params.date);
+  if (isNaN(dayStart.getTime())) {
+    return res.status(400).json({ message: "Invalid date — use YYYY-MM-DD" });
+  }
   dayStart.setHours(0, 0, 0, 0);
   const dayEnd = new Date(dayStart);
   dayEnd.setHours(23, 59, 59, 999);
 
-  const entries = await FoodEntry.find({
-    user: req.userId,
-    date: { $gte: dayStart, $lte: dayEnd },
-  });
-
-  const totals = entries.reduce(
-    (acc, e) => {
-      acc.calories += e.calories;
-      acc.protein += e.protein;
-      acc.carbs += e.carbs;
-      acc.fat += e.fat;
-      return acc;
-    },
-    { calories: 0, protein: 0, carbs: 0, fat: 0 }
-  );
-
-  const user = await User.findById(req.userId);
-  const target = user.calculateTargetCalories();
+  const [foodEntries, workouts, cardioSessions] = await Promise.all([
+    FoodEntry.find({ user: req.userId, date: { $gte: dayStart, $lte: dayEnd } }).sort({ date: 1 }),
+    WorkoutSession.find({ user: req.userId, date: { $gte: dayStart, $lte: dayEnd } })
+      .populate("exercises.exercise")
+      .sort({ date: 1 }),
+    CardioSession.find({ user: req.userId, date: { $gte: dayStart, $lte: dayEnd } }).sort({ date: 1 }),
+  ]);
 
   res.json({
     date: dayStart.toISOString().slice(0, 10),
-    totals,
-    targetCalories: target,
-    remainingCalories: target ? Math.round(target - totals.calories) : null,
-    entries,
+    foodEntries,
+    workouts,
+    cardioSessions,
   });
 });
 
+export default router;
