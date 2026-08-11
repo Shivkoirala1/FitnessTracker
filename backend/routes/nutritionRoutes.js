@@ -98,6 +98,12 @@ router.get("/summary/:date", async (req, res) => {
   const user = await User.findById(req.userId);
   const target = user.calculateTargetCalories();
 
-  
+  res.json({
+    date: dayStart.toISOString().slice(0, 10),
+    totals,
+    targetCalories: target,
+    remainingCalories: target ? Math.round(target - totals.calories) : null,
+    entries,
+  });
 });
 
