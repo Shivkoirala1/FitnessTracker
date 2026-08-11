@@ -35,3 +35,28 @@ router.get("/", async (req, res) => {
   res.json(sessions);
 });
 
+// Totals over a date range, e.g. weekly walk summary
+router.get("/summary", async (req, res) => {
+  const { from, to } = req.query;
+  const filter = { user: req.userId };
+  if (from || to) {
+    filter.date = {};
+    if (from) filter.date.$gte = new Date(from);
+    if (to) filter.date.$lte = new Date(to);
+  }
+  const sessions = await CardioSession.find(filter);
+  const totals = sessions.reduce(
+    (acc, s) => {
+      acc.distanceKm += s.distanceKm || 0;
+      acc.durationMinutes += s.durationMinutes || 0;
+      acc.steps += s.steps || 0;
+      acc.caloriesBurned += s.caloriesBurned || 0;
+      return acc;
+    },
+    { distanceKm: 0, durationMinutes: 0, steps: 0, caloriesBurned: 0 }
+  );
+  res.json({ totals, sessionCount: sessions.length });
+});
+
+
+export default router;
