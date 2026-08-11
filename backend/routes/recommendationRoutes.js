@@ -93,4 +93,4 @@ router.get("/", async (req, res) => {
   res.json({ target, caloriesEaten, proteinEaten, proteinTarget, recommendations });
 });
 
-
+export default router;
