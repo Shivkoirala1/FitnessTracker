@@ -58,6 +58,18 @@ router.get("/", async (req, res) => {
   const allGroups = ["chest", "triceps", "back", "biceps", "shoulder", "leg", "abs"];
   const untrainedGroups = allGroups.filter((g) => !trainedGroups.has(g));
 
+  if (untrainedGroups.length) {
+    recommendations.push({
+      type: "workout",
+      message: `You haven't trained ${untrainedGroups.join(", ")} in the last 7 days. Consider adding it to your split.`,
+    });
+  }
+  if (recentWorkouts.length === 0) {
+    recommendations.push({
+      type: "workout",
+      message: "No workouts logged in the last 7 days — time to get back in the gym.",
+    });
+  }
 
 
 
