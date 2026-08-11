@@ -27,6 +27,22 @@ router.get("/", async (req, res) => {
     CardioSession.find({ user: req.userId, date: { $gte: since } }),
   ]);
 
+  const byDate = {};
+  for (let i = 0; i < days; i++) {
+    const d = new Date(since);
+    d.setDate(d.getDate() + i);
+    const key = dateKey(d);
+    byDate[key] = {
+      date: key,
+      caloriesEaten: 0,
+      proteinEaten: 0,
+      workoutSessions: 0,
+      workoutCaloriesBurned: 0,
+      cardioSessions: 0,
+      cardioCaloriesBurned: 0,
+      cardioDistanceKm: 0,
+    };
+  }
 
 
 });
