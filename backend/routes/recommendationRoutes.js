@@ -22,6 +22,15 @@ router.get("/", async (req, res) => {
     return res.json({ recommendations });
   }
 
+  // --- Nutrition check (today) ---
+  const dayStart = new Date();
+  dayStart.setHours(0, 0, 0, 0);
+  const todaysFood = await FoodEntry.find({ user: req.userId, date: { $gte: dayStart } });
+  const caloriesEaten = todaysFood.reduce((sum, e) => sum + e.calories, 0);
+  const proteinEaten = todaysFood.reduce((sum, e) => sum + e.protein, 0);
+  const proteinTarget = Math.round(user.weight * 1.8); // ~1.8g/kg for active lifters
+
+
   }
 
 
