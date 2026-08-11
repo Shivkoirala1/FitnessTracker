@@ -44,7 +44,16 @@ router.get("/", async (req, res) => {
     };
   }
 
+  for (const e of foodEntries) {
+    const row = byDate[dateKey(e.date)];
+    if (!row) continue;
+    row.caloriesEaten += e.calories;
+    row.proteinEaten += e.protein;
+  }
+  
 
+  const result = Object.values(byDate).sort((a, b) => b.date.localeCompare(a.date));
+  res.json({ days: result });
 });
 
 
