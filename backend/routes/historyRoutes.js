@@ -68,6 +68,25 @@ router.get("/", async (req, res) => {
   res.json({ days: result });
 });
 
+// GET /api/history/2026-08-01 — everything logged on a single day.
+router.get("/:date", async (req, res) => {
+  const dayStart = new Date(req.params.date);
+  if (isNaN(dayStart.getTime())) {
+    return res.status(400).json({ message: "Invalid date — use YYYY-MM-DD" });
+  }
+  dayStart.setHours(0, 0, 0, 0);
+  const dayEnd = new Date(dayStart);
+  dayEnd.setHours(23, 59, 59, 999);
 
+  const [foodEntries, workouts, cardioSessions] = await Promise.all([
+    FoodEntry.find({ user: req.userId, date: { $gte: dayStart, $lte: dayEnd } }).sort({ date: 1 }),
+    WorkoutSession.find({ user: req.userId, date: { $gte: dayStart, $lte: dayEnd } })
+      .populate("exercises.exercise")
+      .sort({ date: 1 }),
+    CardioSession.find({ user: req.userId, date: { $gte: dayStart, $lte: dayEnd } }).sort({ date: 1 }),
+  ]);
+
+  
+});
 
 export default router;
