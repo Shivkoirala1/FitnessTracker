@@ -21,7 +21,12 @@ router.get("/", async (req, res) => {
   since.setHours(0, 0, 0, 0);
   since.setDate(since.getDate() - (days - 1));
 
- 
+  const [foodEntries, workouts, cardioSessions] = await Promise.all([
+    FoodEntry.find({ user: req.userId, date: { $gte: since } }),
+    WorkoutSession.find({ user: req.userId, date: { $gte: since } }),
+    CardioSession.find({ user: req.userId, date: { $gte: since } }),
+  ]);
+
 
 
 });
