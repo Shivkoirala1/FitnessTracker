@@ -84,7 +84,16 @@ router.get("/summary/:date", async (req, res) => {
     date: { $gte: dayStart, $lte: dayEnd },
   });
 
-  
+  const totals = entries.reduce(
+    (acc, e) => {
+      acc.calories += e.calories;
+      acc.protein += e.protein;
+      acc.carbs += e.carbs;
+      acc.fat += e.fat;
+      return acc;
+    },
+    { calories: 0, protein: 0, carbs: 0, fat: 0 }
+  );
 
   const user = await User.findById(req.userId);
   const target = user.calculateTargetCalories();
