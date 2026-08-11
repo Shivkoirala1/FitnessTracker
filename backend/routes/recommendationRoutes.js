@@ -30,7 +30,25 @@ router.get("/", async (req, res) => {
   const proteinEaten = todaysFood.reduce((sum, e) => sum + e.protein, 0);
   const proteinTarget = Math.round(user.weight * 1.8); // ~1.8g/kg for active lifters
 
-
+  if (target) {
+    const remaining = target - caloriesEaten;
+    if (remaining > 300) {
+      recommendations.push({
+        type: "nutrition",
+        message: `You've eaten ${Math.round(caloriesEaten)} kcal today, about ${Math.round(remaining)} kcal under your ${user.goal} target of ${target}. Consider a nutrient-dense meal or snack.`,
+      });
+    } else if (remaining < -300) {
+      recommendations.push({
+        type: "nutrition",
+        message: `You're about ${Math.round(-remaining)} kcal over your ${target} kcal target today.`,
+      });
+    }
+  }
+  if (proteinEaten < proteinTarget * 0.7) {
+    recommendations.push({
+      type: "nutrition",
+      message: `Protein so far today is ${Math.round(proteinEaten)}g, below your ~${proteinTarget}g target. Add a protein-rich food.`,
+    });
   }
 
 
