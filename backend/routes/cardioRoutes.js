@@ -58,5 +58,9 @@ router.get("/summary", async (req, res) => {
   res.json({ totals, sessionCount: sessions.length });
 });
 
+router.delete("/:id", async (req, res) => {
+  await CardioSession.deleteOne({ _id: req.params.id, user: req.userId });
+  res.json({ message: "Deleted" });
+});
 
 export default router;
