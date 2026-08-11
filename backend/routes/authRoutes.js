@@ -58,6 +58,18 @@ router.get("/me", requireAuth, async (req, res) => {
   });
 });
 
+router.put("/me", requireAuth, async (req, res) => {
+  const allowed = ["name", "age", "height", "weight", "sex", "activityLevel", "goal"];
+  const updates = {};
+  for (const key of allowed) if (key in req.body) updates[key] = req.body[key];
 
+  const user = await User.findByIdAndUpdate(req.userId, updates, { new: true }).select("-password");
+  res.json({
+    user,
+    bmr: user.calculateBMR(),
+    tdee: user.calculateTDEE(),
+    targetCalories: user.calculateTargetCalories(),
+  });
+});
 
 export default router;
