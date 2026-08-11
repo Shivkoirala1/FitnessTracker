@@ -31,6 +31,12 @@ router.post("/", async (req, res) => {
       ...nutrition,
     });
 
+    res.status(201).json(entry);
+  } catch (err) {
+    // Lookup failures (food not found, rate limit) are the user's problem to fix by
+    // rephrasing the food name — surface as 422 rather than a generic 500.
+    res.status(422).json({ message: err.message });
+  }
 });
 
 
