@@ -20,7 +20,13 @@ const exercises = [
   
  
 
-  
+  // Biceps
+  { name: "Barbell Curl", muscleGroup: "biceps", met: 4 },
+  { name: "Dumbbell Curl", muscleGroup: "biceps", met: 4 },
+  { name: "Hammer Curl", muscleGroup: "biceps", met: 4 },
+  { name: "Preacher Curl", muscleGroup: "biceps", met: 4 },
+  { name: "Concentration Curl", muscleGroup: "biceps", met: 3.5 },
+  { name: "Cable Curl", muscleGroup: "biceps", met: 4 },
 
   // Shoulder
   { name: "Overhead Press", muscleGroup: "shoulder", met: 5 },
