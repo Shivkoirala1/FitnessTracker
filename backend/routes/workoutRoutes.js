@@ -17,6 +17,29 @@ router.get("/exercises", async (req, res) => {
   res.json(exercises);
 });
 
+// Add a custom exercise not in the built-in library (e.g. a machine or movement
+// specific to the user's gym). Only visible to the user who created it.
+router.post("/exercises", async (req, res) => {
+  try {
+    const { name, muscleGroup, met } = req.body;
+    if (!name || !muscleGroup) {
+      return res.status(400).json({ message: "name and muscleGroup are required" });
+    }
+    const exercise = await Exercise.create({
+      name: name.trim(),
+      muscleGroup,
+      met: Number(met) || 5,
+      createdBy: req.userId,
+    });
+    res.status(201).json(exercise);
+  } catch (err) {
+    if (err.code === 11000) {
+      return res.status(409).json({ message: "You already have an exercise with that name." });
+    }
+    res.status(500).json({ message: err.message });
+  }
+});
+
 
 
 
