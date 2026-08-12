@@ -26,6 +26,13 @@ const exercises = [
   
 ];
 
-
+async function run() {
+  await connectDB();
+  for (const ex of exercises) {
+    await Exercise.updateOne({ name: ex.name, createdBy: null }, ex, { upsert: true });
+  }
+  console.log(`Seeded ${exercises.length} exercises across 7 muscle groups.`);
+  await mongoose.disconnect();
+}
 
 run();
