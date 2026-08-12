@@ -33,4 +33,9 @@ export function estimateWorkoutCalories({ exercises, durationMinutes, weightKg }
   return caloriesFromMET(avgMet, weightKg, duration);
 }
 
+export function estimateCardioCalories({ type, durationMinutes, weightKg }) {
+  const met = CARDIO_MET[type] || CARDIO_MET.walk;
+  return caloriesFromMET(met, weightKg, durationMinutes);
+}
 
+export { CARDIO_MET };
