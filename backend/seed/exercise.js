@@ -22,7 +22,21 @@ const exercises = [
 
   
 
-  
+  // Shoulder
+  { name: "Overhead Press", muscleGroup: "shoulder", met: 5 },
+  { name: "Arnold Press", muscleGroup: "shoulder", met: 5 },
+  { name: "Lateral Raise", muscleGroup: "shoulder", met: 3.5 },
+  { name: "Front Raise", muscleGroup: "shoulder", met: 3.5 },
+  { name: "Rear Delt Fly", muscleGroup: "shoulder", met: 3.5 },
+  { name: "Upright Row", muscleGroup: "shoulder", met: 4.5 },
+  { name: "Barbell Shrug", muscleGroup: "shoulder", met: 4 },
+
+  // Leg
+  { name: "Barbell Squat", muscleGroup: "leg", met: 6 },
+  { name: "Leg Press", muscleGroup: "leg", met: 5 },
+  { name: "Romanian Deadlift", muscleGroup: "leg", met: 6 },
+  { name: "Leg Curl", muscleGroup: "leg", met: 4.5 },
+  { name: "Leg Extension", muscleGroup: "leg", met: 4 },
   { name: "Walking Lunge", muscleGroup: "leg", met: 5 },
   { name: "Bulgarian Split Squat", muscleGroup: "leg", met: 5.5 },
   { name: "Calf Raise", muscleGroup: "leg", met: 4 },
