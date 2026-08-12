@@ -18,7 +18,14 @@ const exercises = [
   { name: "Dumbbell Pullover", muscleGroup: "chest", met: 4.5 },
 
   
- 
+  // Back
+  { name: "Deadlift", muscleGroup: "back", met: 6.5 },
+  { name: "Pull-Up", muscleGroup: "back", met: 5.5 },
+  { name: "Lat Pulldown", muscleGroup: "back", met: 4.5 },
+  { name: "Barbell Row", muscleGroup: "back", met: 5.5 },
+  { name: "Seated Cable Row", muscleGroup: "back", met: 4.5 },
+  { name: "T-Bar Row", muscleGroup: "back", met: 5.5 },
+  { name: "Face Pull", muscleGroup: "back", met: 3.5 },
 
   // Biceps
   { name: "Barbell Curl", muscleGroup: "biceps", met: 4 },
