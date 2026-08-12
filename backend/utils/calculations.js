@@ -21,4 +21,16 @@ export function caloriesFromMET(met, weightKg, durationMinutes) {
  * exercises: [{ exercise: { met }, sets: [{reps, weight}] }]
  * Uses logged durationMinutes if provided, otherwise estimates from set count.
  */
+export function estimateWorkoutCalories({ exercises, durationMinutes, weightKg }) {
+  const totalSets = exercises.reduce((sum, e) => sum + e.sets.length, 0);
+  const avgMet =
+    exercises.reduce((sum, e) => sum + (e.exercise?.met || 5), 0) /
+    Math.max(exercises.length, 1);
+
+  const duration =
+    durationMinutes || Math.round((totalSets * SECONDS_PER_SET) / 60);
+
+  return caloriesFromMET(avgMet, weightKg, duration);
+}
+
 
