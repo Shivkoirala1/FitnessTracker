@@ -1,18 +1,69 @@
-# React + Vite
+# RichardGym Tracker (MERN)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A members' workout tracker built for **Richard's Fitness & Gym, Biratnagar** — tracks
+nutrition, workouts, and cardio/walks, with a rule-based recommendation engine. Also
+includes public **About Us** (`/about`) and **Contact Us** (`/contact`) pages with the
+gym's details and the developer's social links.
 
-Currently, two official plugins are available:
+## Structure
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+```
+gym-tracker/
+  backend/    Express + MongoDB (Mongoose) API
+  frontend/   React (Vite) + Tailwind CSS
+```
 
-## React Compiler
+## What's included
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+- **Auth**: register/login with JWT, profile fields (age, height, weight, sex, activity level, goal)
+- **Nutrition**: log food intake, daily summary vs a calculated calorie target (Mifflin-St Jeor + activity multiplier + goal adjustment)
+- **Workout**: exercise library seeded by muscle group, log sets/reps/weight per session, auto-estimated calories burned (MET-based), "journey" check (days since a muscle group was last trained)
+- **Cardio**: log walk/run/cycle sessions with distance/duration/steps, auto-estimated calories burned, weekly totals
+- **Recommendations**: `/api/recommendations` combines all of the above into plain-language suggestions (under/over calorie target, low protein, untrained muscle groups, low weekly cardio)
 
-Note: This will impact Vite dev & build performances.
+## Setup
 
-## Expanding the ESLint configuration
+### 1. Backend
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+```bash
+cd backend
+cp .env.example .env     # edit MONGO_URI / JWT_SECRET as needed
+npm install
+npm run seed              # populates the exercise library
+npm run dev                # starts on http://localhost:5000
+```
+
+Requires a running MongoDB instance (local `mongod`, or a free MongoDB Atlas cluster —
+just paste its connection string into `MONGO_URI`).
+
+### 2. Frontend
+
+```bash
+cd frontend
+npm install
+npm run dev                # starts on http://localhost:5173
+```
+
+The Vite dev server proxies `/api` to `http://localhost:5000`, so no CORS config is needed
+in development.
+
+## What's deliberately left out (next steps)
+
+- **Nutrition API integration**: food calories/macros are entered manually right now.
+  Wire in USDA FoodData Central or Nutritionix in `nutritionRoutes.js` to auto-fill them
+  from a food name search.
+- **Charts**: the dashboard shows raw numbers; add a charting library (recharts, Chart.js)
+  for calorie/weight/volume trends over time.
+- **Weight history**: `User.weight` is a single current value — consider a separate
+  `WeightLog` collection if you want a trend line.
+- **Password reset, email verification.**
+- **Tests.**
+
+## Environment variables (backend/.env)
+
+| Variable | Description |
+|---|---|
+| `PORT` | API port (default 5000) |
+| `MONGO_URI` | MongoDB connection string |
+| `JWT_SECRET` | Secret for signing auth tokens — use a long random string |
+| `NUTRITIONIX_APP_ID` / `NUTRITIONIX_APP_KEY` | Optional, for future nutrition API lookup |
