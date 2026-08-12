@@ -8,5 +8,12 @@ const CARDIO_MET = {
   cycle: 7.5, // moderate
 };
 
+/**
+ * calories = MET x weight(kg) x duration(hours)
+ */
+export function caloriesFromMET(met, weightKg, durationMinutes) {
+  if (!weightKg || !durationMinutes) return 0;
+  return Math.round(met * weightKg * (durationMinutes / 60));
+}
 
 
