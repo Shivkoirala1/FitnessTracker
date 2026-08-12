@@ -47,4 +47,7 @@ export async function lookupFoodPer100g(foodName) {
   return result;
 }
 
+/**
+ * Scales per-100g nutrition to the actual amount eaten (in grams).
+ */
 
