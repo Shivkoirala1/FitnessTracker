@@ -30,6 +30,21 @@ export async function lookupFoodPer100g(foodName) {
     throw new Error(`Nutrition lookup failed (status ${response.status})`);
   }
 
-  
+  const data = await response.json();
+  const food = data.foods?.[0];
+  if (!food) {
+    throw new Error(`No nutrition data found for "${foodName}". Try a simpler, more generic name (e.g. "chicken breast" instead of a brand name).`);
+  }
+
+  const per100g = { calories: 0, protein: 0, carbs: 0, fat: 0 };
+  for (const n of food.foodNutrients || []) {
+    const mapped = NUTRIENT_MAP[n.nutrientName?.toLowerCase()];
+    if (mapped) per100g[mapped] = n.value || 0;
+  }
+
+  const result = { fdcId: food.fdcId, matchedName: food.description, per100g };
+  cache.set(key, result);
+  return result;
+}
 
 
