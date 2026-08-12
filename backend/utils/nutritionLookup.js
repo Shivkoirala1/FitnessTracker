@@ -4,4 +4,12 @@
 //
 // Returns nutrition PER 100g — callers scale this to the amount the user actually ate.
 
+const cache = new Map(); // foodName (lowercased) -> result, avoids repeat API calls
+
+const NUTRIENT_MAP = {
+  "energy": "calories", // kcal
+  "protein": "protein",
+  "carbohydrate, by difference": "carbs",
+  "total lipid (fat)": "fat",
+};
 
