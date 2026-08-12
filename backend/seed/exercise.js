@@ -23,7 +23,18 @@ const exercises = [
   
 
   
-  
+  { name: "Walking Lunge", muscleGroup: "leg", met: 5 },
+  { name: "Bulgarian Split Squat", muscleGroup: "leg", met: 5.5 },
+  { name: "Calf Raise", muscleGroup: "leg", met: 4 },
+
+  // Abs
+  { name: "Plank", muscleGroup: "abs", met: 3.5 },
+  { name: "Hanging Leg Raise", muscleGroup: "abs", met: 4 },
+  { name: "Cable Crunch", muscleGroup: "abs", met: 4 },
+  { name: "Russian Twist", muscleGroup: "abs", met: 4 },
+  { name: "Ab Wheel Rollout", muscleGroup: "abs", met: 4.5 },
+  { name: "Sit-Up", muscleGroup: "abs", met: 3.8 },
+  { name: "Mountain Climber", muscleGroup: "abs", met: 6 },
 ];
 
 async function run() {
