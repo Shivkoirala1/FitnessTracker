@@ -81,7 +81,12 @@ router.post("/", async (req, res) => {
   }
 });
 
-
+router.get("/", async (req, res) => {
+  const sessions = await WorkoutSession.find({ user: req.userId })
+    .populate("exercises.exercise")
+    .sort({ date: -1 });
+  res.json(sessions);
+});
 
 
 
