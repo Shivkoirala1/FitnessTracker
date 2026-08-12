@@ -88,6 +88,23 @@ router.get("/", async (req, res) => {
   res.json(sessions);
 });
 
+// "Journey" check: how long since this dayType was last trained.
+router.get("/journey/:dayType", async (req, res) => {
+  const last = await WorkoutSession.findOne({
+    user: req.userId,
+    dayType: req.params.dayType,
+  }).sort({ date: -1 });
 
+  if (!last) {
+    return res.json({ dayType: req.params.dayType, message: "No sessions logged yet — time to start!" });
+  }
+  const daysSince = Math.floor((Date.now() - last.date) / (1000 * 60 * 60 * 24));
+  res.json({ dayType: req.params.dayType, lastTrained: last.date, daysSince });
+});
+
+router.delete("/:id", async (req, res) => {
+  await WorkoutSession.deleteOne({ _id: req.params.id, user: req.userId });
+  res.json({ message: "Deleted" });
+});
 
 export default router;
