@@ -64,7 +64,22 @@ router.post("/", async (req, res) => {
       weightKg: user.weight,
     });
 
-   
+    const session = await WorkoutSession.create({
+      user: req.userId,
+      dayType,
+      exercises: exercises.map((e) => ({ exercise: e.exercise, sets: e.sets })),
+      durationMinutes,
+      caloriesBurned,
+      notes,
+      date,
+    });
+
+    const populated = await session.populate("exercises.exercise");
+    res.status(201).json(populated);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
 
 
 
