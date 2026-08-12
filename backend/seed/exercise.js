@@ -17,7 +17,14 @@ const exercises = [
   { name: "Chest Dip", muscleGroup: "chest", met: 5 },
   { name: "Dumbbell Pullover", muscleGroup: "chest", met: 4.5 },
 
-  
+  // Triceps
+  { name: "Tricep Pushdown", muscleGroup: "triceps", met: 4 },
+  { name: "Skull Crushers", muscleGroup: "triceps", met: 4 },
+  { name: "Overhead Tricep Extension", muscleGroup: "triceps", met: 4 },
+  { name: "Close-Grip Bench Press", muscleGroup: "triceps", met: 5.5 },
+  { name: "Tricep Dip", muscleGroup: "triceps", met: 4.5 },
+  { name: "Cable Kickback", muscleGroup: "triceps", met: 3.5 },
+
   // Back
   { name: "Deadlift", muscleGroup: "back", met: 6.5 },
   { name: "Pull-Up", muscleGroup: "back", met: 5.5 },
