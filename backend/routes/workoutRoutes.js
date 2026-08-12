@@ -40,6 +40,31 @@ router.post("/exercises", async (req, res) => {
   }
 });
 
+// Log a workout session, e.g.:
+// { dayType: "chest", durationMinutes: 55, exercises: [{ exercise: "<id>", sets: [{reps:10, weight:60}, ...] }] }
+router.post("/", async (req, res) => {
+  try {
+    const { dayType, exercises, durationMinutes, notes, date } = req.body;
+    if (!dayType || !exercises?.length) {
+      return res.status(400).json({ message: "dayType and at least one exercise are required" });
+    }
+
+    const user = await User.findById(req.userId);
+    const populatedExercises = await Promise.all(
+      exercises.map(async (e) => ({
+        exercise: e.exercise,
+        sets: e.sets,
+        met: (await Exercise.findById(e.exercise))?.met || 5,
+      }))
+    );
+
+    const caloriesBurned = estimateWorkoutCalories({
+      exercises: populatedExercises.map((e) => ({ exercise: { met: e.met }, sets: e.sets })),
+      durationMinutes,
+      weightKg: user.weight,
+    });
+
+   
 
 
 
