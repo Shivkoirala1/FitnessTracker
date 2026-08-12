@@ -16,4 +16,9 @@ export function caloriesFromMET(met, weightKg, durationMinutes) {
   return Math.round(met * weightKg * (durationMinutes / 60));
 }
 
+/**
+ * Estimates total calories burned in a resistance workout session.
+ * exercises: [{ exercise: { met }, sets: [{reps, weight}] }]
+ * Uses logged durationMinutes if provided, otherwise estimates from set count.
+ */
 
