@@ -13,3 +13,23 @@ const NUTRIENT_MAP = {
   "total lipid (fat)": "fat",
 };
 
+export async function lookupFoodPer100g(foodName) {
+  const key = foodName.trim().toLowerCase();
+  if (cache.has(key)) return cache.get(key);
+
+  const apiKey = process.env.USDA_API_KEY || "DEMO_KEY";
+  const url = `https://api.nal.usda.gov/fdc/v1/foods/search?api_key=${apiKey}&query=${encodeURIComponent(
+    foodName
+  )}&pageSize=1&dataType=Foundation,SR%20Legacy`;
+
+  const response = await fetch(url);
+  if (!response.ok) {
+    if (response.status === 429) {
+      throw new Error("Nutrition lookup rate limit reached. Get a free personal API key at https://fdc.nal.usda.gov/api-key-signup and set USDA_API_KEY.");
+    }
+    throw new Error(`Nutrition lookup failed (status ${response.status})`);
+  }
+
+  
+
+
