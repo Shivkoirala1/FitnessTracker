@@ -13,3 +13,16 @@ const links = [
   { to: "/contact", label: "Contact" },
 ];
 
+export default function Navbar() {
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
+  const [open, setOpen] = useState(false);
+
+  if (!user) return null;
+
+  function handleLogout() {
+    logout();
+    setOpen(false);
+    navigate("/login");
+  }
+
