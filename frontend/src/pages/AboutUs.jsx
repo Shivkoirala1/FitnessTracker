@@ -28,4 +28,11 @@ export default function AboutUs() {
   );
 }
 
-
+function Stat({ label, value }) {
+  return (
+    <div className="bg-ink border border-line rounded-xl px-2.5 sm:px-4 py-3">
+      <p className="text-muted text-[11px] sm:text-xs uppercase tracking-wide">{label}</p>
+      <p className="font-mono text-sm sm:text-base font-medium mt-1 truncate">{value}</p>
+    </div>
+  );
+}
