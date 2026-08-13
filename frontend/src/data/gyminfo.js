@@ -16,3 +16,15 @@ export const GYM = {
   mapsQuery: "Richard's Fitness & Gym, Biratnagar",
 };
 
+export const CREATOR = {
+  name: "Damaru Koirala",
+  role: "Developer",
+  // Drop a real photo at frontend/public/profile.jpg and it will be used
+  // automatically — no code changes needed. Until then, the About page
+  // falls back to a plain initials badge.
+  photo: "/profile.jpg",
+  initials: "DK",
+  instagram: "https://www.instagram.com/koiralashiv/",
+  linkedin: "https://www.linkedin.com/in/damaru-koirala-282059398/",
+  facebook: "https://www.facebook.com/koirala.shiv.7",
+};
