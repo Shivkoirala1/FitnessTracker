@@ -18,7 +18,15 @@ export default function App() {
       <Navbar />
       <main className="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
         <Routes>
-          
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+          <Route path="/nutrition" element={<ProtectedRoute><Nutrition /></ProtectedRoute>} />
+          <Route path="/workout" element={<ProtectedRoute><Workout /></ProtectedRoute>} />
+          <Route path="/cardio" element={<ProtectedRoute><Cardio /></ProtectedRoute>} />
+          <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+          <Route path="/history" element={<ProtectedRoute><History /></ProtectedRoute>} />
+          <Route path="/about" element={<AboutUs />} />
           <Route path="/contact" element={<ContactUs />} />
         </Routes>
       </main>
