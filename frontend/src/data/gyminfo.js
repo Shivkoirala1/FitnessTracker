@@ -22,7 +22,7 @@ export const CREATOR = {
   // Drop a real photo at frontend/public/profile.jpg and it will be used
   // automatically — no code changes needed. Until then, the About page
   // falls back to a plain initials badge.
-  photo: "/profile.jpg",
+  photo: "/Profile.jpeg",
   initials: "DK",
   instagram: "https://www.instagram.com/koiralashiv/",
   linkedin: "https://www.linkedin.com/in/damaru-koirala-282059398/",
