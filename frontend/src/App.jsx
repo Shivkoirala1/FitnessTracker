@@ -12,3 +12,16 @@ import History from "./pages/History.jsx";
 import AboutUs from "./pages/AboutUs.jsx";
 import ContactUs from "./pages/ContactUs.jsx";
 
+export default function App() {
+  return (
+    <div className="min-h-screen">
+      <Navbar />
+      <main className="max-w-4xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
+        <Routes>
+          
+          <Route path="/contact" element={<ContactUs />} />
+        </Routes>
+      </main>
+    </div>
+  );
+}
