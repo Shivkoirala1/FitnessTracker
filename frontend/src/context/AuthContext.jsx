@@ -32,7 +32,16 @@ export function AuthProvider({ children }) {
     setUser(res.data.user);
   }
 
-  
+  function logout() {
+    localStorage.removeItem("token");
+    setUser(null);
+  }
+
+  return (
+    <AuthContext.Provider value={{ user, loading, login, register, logout }}>
+      {children}
+    </AuthContext.Provider>
+  );
 }
 
 export function useAuth() {
