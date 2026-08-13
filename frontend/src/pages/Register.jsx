@@ -16,3 +16,23 @@ export default function Register() {
   function update(field, value) {
     setForm((f) => ({ ...f, [field]: value }));
   }
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+    setError("");
+    setLoading(true);
+    try {
+      await register({
+        ...form,
+        age: Number(form.age) || undefined,
+        height: Number(form.height) || undefined,
+        weight: Number(form.weight) || undefined,
+      });
+      navigate("/");
+    } catch (err) {
+      setError(err.response?.data?.message || "Registration failed");
+    } finally {
+      setLoading(false);
+    }
+  }
+  
