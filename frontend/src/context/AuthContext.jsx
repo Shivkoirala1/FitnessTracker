@@ -20,7 +20,17 @@ export function AuthProvider({ children }) {
       .finally(() => setLoading(false));
   }, []);
 
-  
+  async function login(email, password) {
+    const res = await client.post("/auth/login", { email, password });
+    localStorage.setItem("token", res.data.token);
+    setUser(res.data.user);
+  }
+
+  async function register(payload) {
+    const res = await client.post("/auth/register", payload);
+    localStorage.setItem("token", res.data.token);
+    setUser(res.data.user);
+  }
 
   
 }
