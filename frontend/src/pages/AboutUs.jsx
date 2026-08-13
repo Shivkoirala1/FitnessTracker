@@ -22,7 +22,35 @@ export default function AboutUs() {
         The gym behind the log, and the person who built it.
       </p>
 
-     
+      {/* The gym */}
+      <section className="bg-panel border border-line rounded-xl px-5 py-5 sm:px-6 sm:py-6 mb-6">
+        <div className="flex flex-wrap items-start justify-between gap-3 mb-3">
+          <div>
+            <h2 className="font-display text-xl font-bold uppercase tracking-wide">{GYM.name}</h2>
+            <p className="text-muted text-sm">{GYM.category} · {GYM.location}</p>
+          </div>
+          <span className="text-xs font-mono bg-ink border border-dashed border-line rounded px-3 py-1.5 shrink-0">
+            ★ {GYM.rating} ({GYM.reviewCount})
+          </span>
+        </div>
+
+        <div className="ledger-rule my-4" />
+
+        <p className="text-sm text-bone leading-relaxed">
+          {GYM.name} is a fitness center in {GYM.location} built around free weights,
+          plate-loaded and cable machines, and a straightforward floor for anyone training
+          for strength, size, or general conditioning. This tracker exists to give members a
+          simple way to log every session — nutrition, lifts, and cardio — instead of losing
+          it to memory.
+        </p>
+
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-3 mt-5">
+          <Stat label="Rating" value={`${GYM.rating} / 5`} />
+          <Stat label="Reviews" value={GYM.reviewCount} />
+          <Stat label="Category" value={GYM.category} />
+          <Stat label="Location" value={GYM.location} />
+        </div>
+      </section>
 
       {/* The creator */}
       <section className="bg-panel border border-line rounded-xl px-5 py-5 sm:px-6 sm:py-6">
