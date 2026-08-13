@@ -21,4 +21,15 @@ body {
   outline-offset: 2px;
 }
 
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
 
+/* Ledger-style perforated divider, used to separate logbook-style sections */
+.ledger-rule {
+  border-top: 1px dashed #3A4536;
+}
