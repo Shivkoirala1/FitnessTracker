@@ -16,3 +16,14 @@ export default function Nutrition() {
     </div>
   );
 }
+
+const { showToast } = useToast();
+
+const [summary, setSummary] = useState(null);
+const [foodName, setFoodName] = useState("");
+const [amountGrams, setAmountGrams] = useState("");
+const [mealType, setMealType] = useState("snack");
+const [preview, setPreview] = useState(null);
+const [error, setError] = useState("");
+const [loading, setLoading] = useState(false);
+const [recentFoods, setRecentFoods] = useState([]);
