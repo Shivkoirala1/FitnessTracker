@@ -2,6 +2,11 @@ import { useState } from "react";
 import client from "../api/client.js";
 import { useToast } from "../context/ToastContext.jsx";
 import { useEffect, useState } from "react";
+import {
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 
 const today = () => new Date().toISOString().slice(0, 10);
 
@@ -193,3 +198,14 @@ async function handleDelete(id) {
 
   await client.delete(`/nutrition/${id}`);
 }
+
+const remaining = useMemo(() => {
+  if (!summary?.targetCalories) {
+    return null;
+  }
+
+  return Math.round(
+    summary.targetCalories -
+      summary.totals.calories
+  );
+}, [summary]);
