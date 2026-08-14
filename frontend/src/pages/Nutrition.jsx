@@ -33,3 +33,23 @@ async function loadSummary() {
 
   setSummary(res.data);
 }
+
+async function loadRecentFoods() {
+  const from = new Date(
+    Date.now() - 7 * 24 * 60 * 60 * 1000
+  ).toISOString();
+
+  const res = await client.get("/nutrition", {
+    params: { from },
+  });
+
+  const seen = new Map();
+
+  for (const e of res.data) {
+    if (!seen.has(e.foodName)) {
+      seen.set(e.foodName, e.amountGrams);
+    }
+  }
+
+  setRecentFoods([...seen.entries()].slice(0, 6));
+}
