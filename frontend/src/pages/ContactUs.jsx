@@ -94,3 +94,16 @@ const ICONS = {
     </svg>
   ),
 };
+
+
+function Row({ icon, label, children }) {
+  return (
+    <div className="flex items-start gap-3">
+      <span className="text-signal mt-0.5 shrink-0">{ICONS[icon]}</span>
+      <div>
+        <p className="text-muted text-[11px] uppercase tracking-wide font-mono mb-0.5">{label}</p>
+        <p className="text-bone">{children}</p>
+      </div>
+    </div>
+  );
+}
