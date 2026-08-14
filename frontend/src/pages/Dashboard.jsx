@@ -83,5 +83,12 @@ export default function Dashboard() {
   );
 }
 
-
+function Stat({ label, value }) {
+  return (
+    <div className="bg-panel border border-line rounded-xl px-2.5 sm:px-4 py-3 sm:py-4">
+      <p className="text-muted text-[11px] sm:text-xs uppercase tracking-wide">{label}</p>
+      <p className="font-mono text-lg sm:text-xl font-medium mt-1 truncate">{value}</p>
+    </div>
+  );
+}
 
