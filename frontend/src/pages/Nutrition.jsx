@@ -219,3 +219,40 @@ function Stat({ label, value }) {
     </div>
   );
 }
+
+function ProgressBar({
+  current,
+  target,
+  remaining,
+}) {
+  const pct = Math.min(
+    100,
+    Math.round((current / target) * 100)
+  );
+
+  const over = current > target;
+
+  return (
+    <div>
+      <div>
+        <span>
+          {Math.round(current)} / {target}
+        </span>
+
+        <span>
+          {over
+            ? `${Math.abs(remaining)} OVER`
+            : `${remaining} LEFT`}
+        </span>
+      </div>
+
+      <div>
+        <div
+          style={{
+            width: `${pct}%`,
+          }}
+        />
+      </div>
+    </div>
+  );
+}
