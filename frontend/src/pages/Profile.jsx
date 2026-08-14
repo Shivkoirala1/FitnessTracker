@@ -50,7 +50,52 @@ export default function Profile() {
 
   if (!form) return <p className="text-muted">Loading...</p>;
 
- 
+  return (
+    <div>
+      <h1 className="font-display text-2xl sm:text-3xl font-bold uppercase tracking-wide mb-6">Profile</h1>
+
+      {stats && (
+        <div className="grid grid-cols-3 gap-2 sm:gap-4 mb-8">
+          <Stat label="BMR" value={stats.bmr ? Math.round(stats.bmr) : "—"} />
+          <Stat label="TDEE" value={stats.tdee ? Math.round(stats.tdee) : "—"} />
+          <Stat label="Target calories" value={stats.targetCalories ?? "—"} />
+        </div>
+      )}
+
+      <form onSubmit={handleSubmit} className="flex flex-col gap-4 max-w-md">
+        <input placeholder="Name" value={form.name} onChange={(e) => update("name", e.target.value)} className={inputClass} required />
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <input type="number" placeholder="Age" value={form.age || ""} onChange={(e) => update("age", e.target.value)} className={inputClass} min="1" max="120" />
+          <input type="number" placeholder="Height (cm)" value={form.height || ""} onChange={(e) => update("height", e.target.value)} className={inputClass} min="50" max="250" />
+          <input type="number" placeholder="Weight (kg)" value={form.weight || ""} onChange={(e) => update("weight", e.target.value)} className={inputClass} min="20" max="400" />
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <select value={form.sex} onChange={(e) => update("sex", e.target.value)} className={inputClass}>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+          </select>
+          <select value={form.activityLevel} onChange={(e) => update("activityLevel", e.target.value)} className={inputClass}>
+            <option value="sedentary">Sedentary</option>
+            <option value="light">Light</option>
+            <option value="moderate">Moderate</option>
+            <option value="active">Active</option>
+            <option value="very_active">Very active</option>
+          </select>
+          <select value={form.goal} onChange={(e) => update("goal", e.target.value)} className={inputClass}>
+            <option value="bulk">Bulk</option>
+            <option value="cut">Cut</option>
+            <option value="maintain">Maintain</option>
+          </select>
+        </div>
+        {error && <p className="text-alert text-sm">{error}</p>}
+        {saved && <p className="text-signal text-sm">Saved.</p>}
+        <button type="submit" disabled={loading} className="bg-signal text-ink font-medium rounded px-4 py-2 mt-1 self-start disabled:opacity-50">
+          {loading ? "Saving..." : "Save changes"}
+        </button>
+      </form>
+    </div>
+  );
+}
 
 function Stat({ label, value }) {
   return (
