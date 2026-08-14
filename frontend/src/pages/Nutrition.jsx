@@ -92,3 +92,11 @@ async function handlePreview(
     setLoading(false);
   }
 }
+
+function applyQuickFood(name, amount) {
+  setFoodName(name);
+
+  setAmountGrams(String(amount));
+
+  handlePreview(name, amount);
+}
