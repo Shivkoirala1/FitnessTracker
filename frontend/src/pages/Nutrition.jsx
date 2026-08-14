@@ -100,3 +100,58 @@ function applyQuickFood(name, amount) {
 
   handlePreview(name, amount);
 }
+
+async function handleSubmit(e) {
+  e.preventDefault();
+
+  setError("");
+
+  setLoading(true);
+
+  try {
+    const res = await client.post(
+      "/nutrition",
+      {
+        foodName,
+        amountGrams: Number(amountGrams),
+        mealType,
+      }
+    );
+
+    setSummary((prev) => ({
+      ...prev,
+
+      entries: [res.data, ...prev.entries],
+
+      totals: {
+        calories:
+          prev.totals.calories +
+          res.data.calories,
+
+        protein:
+          prev.totals.protein +
+          res.data.protein,
+
+        carbs:
+          prev.totals.carbs +
+          res.data.carbs,
+
+        fat:
+          prev.totals.fat +
+          res.data.fat,
+      },
+    }));
+
+    showToast(
+      `Logged ${res.data.foodName}`
+    );
+
+    setFoodName("");
+    setAmountGrams("");
+    setPreview(null);
+
+    loadRecentFoods();
+  } finally {
+    setLoading(false);
+  }
+}
