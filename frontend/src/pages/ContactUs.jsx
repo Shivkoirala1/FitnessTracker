@@ -6,8 +6,6 @@ import { useAuth } from "../context/AuthContext.jsx";
 export default function ContactUs() {
   const { user } = useAuth();
 
-
-
   return (
     <div className={user ? "" : "max-w-2xl mx-auto"}>
       {!user && (
@@ -94,7 +92,6 @@ const ICONS = {
     </svg>
   ),
 };
-
 
 function Row({ icon, label, children }) {
   return (
