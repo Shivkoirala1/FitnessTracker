@@ -1,3 +1,14 @@
+import { useState } from "react";
+import client from "../api/client.js";
+import { useToast } from "../context/ToastContext.jsx";
+
+const today = () => new Date().toISOString().slice(0, 10);
+
+const inputClass =
+  "bg-panel border border-line rounded px-3 py-2 focus:outline-none focus:border-signal";
+
+const PRESET_GRAMS = [50, 100, 150, 200, 300];
+
 export default function Nutrition() {
   return (
     <div>
