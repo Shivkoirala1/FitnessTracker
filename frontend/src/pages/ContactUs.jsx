@@ -69,3 +69,28 @@ export default function ContactUs() {
   );
 }
 
+const ICONS = {
+  pin: (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <path d="M12 21s-7-6.1-7-11a7 7 0 0 1 14 0c0 4.9-7 11-7 11Z" strokeLinejoin="round" />
+      <circle cx="12" cy="10" r="2.5" />
+    </svg>
+  ),
+  clock: (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <circle cx="12" cy="12" r="9" />
+      <path d="M12 7v5l3.5 2" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  ),
+  phone: (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <path d="M4 5c0 8.3 6.7 15 15 15 .7 0 1-.3 1-1v-3.2a1 1 0 0 0-.8-1L15.9 14a1 1 0 0 0-1 .4l-1 1.4a12 12 0 0 1-5.7-5.7l1.4-1a1 1 0 0 0 .4-1L8.7 4.8a1 1 0 0 0-1-.8H4.5a1 1 0 0 0-1 1Z" strokeLinejoin="round" />
+    </svg>
+  ),
+  globe: (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <circle cx="12" cy="12" r="9" />
+      <path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18" strokeLinecap="round" />
+    </svg>
+  ),
+};
