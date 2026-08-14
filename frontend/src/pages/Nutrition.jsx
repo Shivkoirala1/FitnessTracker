@@ -59,3 +59,36 @@ useEffect(() => {
   loadSummary();
   loadRecentFoods();
 }, []);
+
+async function handlePreview(
+  name = foodName,
+  amount = amountGrams
+) {
+  if (!name || !amount) return;
+
+  setError("");
+  setLoading(true);
+
+  try {
+    const res = await client.get(
+      "/nutrition/lookup",
+      {
+        params: {
+          foodName: name,
+          amountGrams: amount,
+        },
+      }
+    );
+
+    setPreview(res.data);
+  } catch (err) {
+    setPreview(null);
+
+    setError(
+      err.response?.data?.message ||
+        "Lookup failed"
+    );
+  } finally {
+    setLoading(false);
+  }
+}
