@@ -209,3 +209,13 @@ const remaining = useMemo(() => {
       summary.totals.calories
   );
 }, [summary]);
+
+function Stat({ label, value }) {
+  return (
+    <div className="bg-panel border border-line rounded-xl px-4 py-4">
+      <p>{label}</p>
+
+      <p>{value}</p>
+    </div>
+  );
+}
