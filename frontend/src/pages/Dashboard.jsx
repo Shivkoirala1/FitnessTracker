@@ -92,3 +92,10 @@ function Stat({ label, value }) {
   );
 }
 
+function QuickLink({ to, label }) {
+  return (
+    <Link to={to} className="bg-panel border border-line hover:border-signal rounded-xl px-4 py-3 text-sm text-center transition-colors">
+      {label}
+    </Link>
+  );
+}
