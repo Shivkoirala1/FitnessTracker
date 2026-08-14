@@ -27,3 +27,9 @@ const [preview, setPreview] = useState(null);
 const [error, setError] = useState("");
 const [loading, setLoading] = useState(false);
 const [recentFoods, setRecentFoods] = useState([]);
+
+async function loadSummary() {
+  const res = await client.get(`/nutrition/summary/${today()}`);
+
+  setSummary(res.data);
+}
