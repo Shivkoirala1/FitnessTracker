@@ -155,3 +155,41 @@ async function handleSubmit(e) {
     setLoading(false);
   }
 }
+
+async function handleDelete(id) {
+  setSummary((prev) => {
+    const entry = prev.entries.find(
+      (e) => e._id === id
+    );
+
+    if (!entry) return prev;
+
+    return {
+      ...prev,
+
+      entries: prev.entries.filter(
+        (e) => e._id !== id
+      ),
+
+      totals: {
+        calories:
+          prev.totals.calories -
+          entry.calories,
+
+        protein:
+          prev.totals.protein -
+          entry.protein,
+
+        carbs:
+          prev.totals.carbs -
+          entry.carbs,
+
+        fat:
+          prev.totals.fat -
+          entry.fat,
+      },
+    };
+  });
+
+  await client.delete(`/nutrition/${id}`);
+}
