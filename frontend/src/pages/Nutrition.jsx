@@ -1,6 +1,7 @@
 import { useState } from "react";
 import client from "../api/client.js";
 import { useToast } from "../context/ToastContext.jsx";
+import { useEffect, useState } from "react";
 
 const today = () => new Date().toISOString().slice(0, 10);
 
@@ -53,3 +54,8 @@ async function loadRecentFoods() {
 
   setRecentFoods([...seen.entries()].slice(0, 6));
 }
+
+useEffect(() => {
+  loadSummary();
+  loadRecentFoods();
+}, []);
