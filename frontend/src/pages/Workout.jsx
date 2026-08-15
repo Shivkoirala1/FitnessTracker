@@ -66,3 +66,13 @@ const [justLoggedId, setJustLoggedId] =
 
 const [expandedSessionId, setExpandedSessionId] =
   useState(null);
+
+  const [showCustomForm, setShowCustomForm] =
+  useState(false);
+
+const [customName, setCustomName] = useState("");
+
+const [customMet, setCustomMet] = useState("");
+
+const [customError, setCustomError] =
+  useState("");
