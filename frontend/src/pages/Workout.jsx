@@ -93,3 +93,17 @@ function loadExercises() {
     )
     .then((res) => setExercises(res.data));
 }
+
+useEffect(() => {
+  loadExercises();
+
+  client
+    .get(`/workouts/journey/${dayType}`)
+    .then((res) => setJourney(res.data));
+}, [dayType]);
+
+useEffect(() => {
+  client
+    .get("/workouts")
+    .then((res) => setSessions(res.data));
+}, []);
