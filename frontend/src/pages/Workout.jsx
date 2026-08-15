@@ -85,3 +85,11 @@ const [overSet, setOverSet] = useState(null);
 
 const [dropzoneActive, setDropzoneActive] =
   useState(false);
+
+function loadExercises() {
+  return client
+    .get(
+      `/workouts/exercises?muscleGroup=${dayType}`
+    )
+    .then((res) => setExercises(res.data));
+}
