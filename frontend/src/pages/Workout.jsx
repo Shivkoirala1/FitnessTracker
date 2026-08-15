@@ -57,3 +57,12 @@ const [journey, setJourney] = useState(null);
 
 const [sessions, setSessions] = useState([]);
 
+const [error, setError] = useState("");
+
+const [loading, setLoading] = useState(false);
+
+const [justLoggedId, setJustLoggedId] =
+  useState(null);
+
+const [expandedSessionId, setExpandedSessionId] =
+  useState(null);
