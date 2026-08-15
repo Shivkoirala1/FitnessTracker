@@ -43,3 +43,17 @@ function Stepper({ value, onChange, step = 1, min = 0 }) {
 export default function Workout() {
   const { showToast } = useToast();
 }
+
+const [dayType, setDayType] = useState("chest");
+
+const [exercises, setExercises] = useState([]);
+
+const [entries, setEntries] = useState([]);
+
+const [durationMinutes, setDurationMinutes] =
+  useState("");
+
+const [journey, setJourney] = useState(null);
+
+const [sessions, setSessions] = useState([]);
+
