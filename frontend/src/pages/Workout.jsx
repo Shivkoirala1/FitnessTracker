@@ -39,3 +39,7 @@ function Stepper({ value, onChange, step = 1, min = 0 }) {
     </div>
   );
 }
+
+export default function Workout() {
+  const { showToast } = useToast();
+}
