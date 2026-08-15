@@ -76,3 +76,12 @@ const [customMet, setCustomMet] = useState("");
 
 const [customError, setCustomError] =
   useState("");
+
+
+  const [overEntryIndex, setOverEntryIndex] =
+  useState(null);
+
+const [overSet, setOverSet] = useState(null);
+
+const [dropzoneActive, setDropzoneActive] =
+  useState(false);
