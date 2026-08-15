@@ -25,3 +25,17 @@ function reorder(list, fromIndex, toIndex) {
 
   return copy;
 }
+
+function Stepper({ value, onChange, step = 1, min = 0 }) {
+  const num = Number(value) || 0;
+
+  return (
+    <div>
+      <button>-</button>
+
+      <input type="number" />
+
+      <button>+</button>
+    </div>
+  );
+}
